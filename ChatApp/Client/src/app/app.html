@@ -1,0 +1,18 @@
+<div class="container">
+  <div class="messages">
+    <div *ngFor="let msg of chatService.messages$ | async">
+      <strong>{{ msg.user }}:</strong> {{ msg.message }}
+    </div>
+  </div>
+
+  <div class="input-area">
+    <input [(ngModel)]="user" placeholder="Your Name" />
+    <input
+      [(ngModel)]="message"
+      (keyup.enter)="sendMessage()"
+      placeholder="Type your message..."
+      maxlength="150"
+    />
+    <button (click)="sendMessage()" [disabled]="!user || !message">Send</button>
+  </div>
+</div>

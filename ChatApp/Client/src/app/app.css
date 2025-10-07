@@ -1,0 +1,92 @@
+:host {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f0f2f5;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+.chat-container {
+  width: 100%;
+  max-width: 600px;
+  height: 80vh;
+  display: flex;
+  flex-direction: column;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #fff;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.messages {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background-color: #e5ddd5; /* Chat background color */
+}
+
+.message {
+  padding: 8px 12px;
+  border-radius: 18px;
+  background-color: #ffffff; /* Received message bubble color */
+  align-self: flex-start;
+  max-width: 75%;
+  word-wrap: break-word;
+}
+
+.message strong {
+  color: #007bff;
+}
+
+.input-area {
+  padding: 15px;
+  border-top: 1px solid #ddd;
+  background-color: #f0f2f5;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.name-input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  box-sizing: border-box; /* Ensures padding doesn't affect width */
+}
+
+.message-input-wrapper {
+  display: flex;
+  gap: 10px;
+}
+
+.message-input-wrapper input {
+  flex-grow: 1;
+  padding: 10px 15px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+}
+
+.message-input-wrapper button {
+  padding: 10px 20px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s;
+}
+
+.message-input-wrapper button:hover:not(:disabled) {
+  background-color: #0056b3;
+}
+
+.message-input-wrapper button:disabled {
+  background-color: #a0c7ff;
+  cursor: not-allowed;
+}
