@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
 import { BehaviorSubject } from 'rxjs';
 
-// Define a simple interface for our message structure
 export interface ChatMessage {
   user: string;
   message: string;
@@ -14,35 +13,44 @@ export interface ChatMessage {
 export class ChatService {
   private hubConnection: signalR.HubConnection;
   
-  // Use a BehaviorSubject to store and stream messages to components
   public messages$ = new BehaviorSubject<ChatMessage[]>([]);
+  // --- NEW: A subject to track the connection state ---
+  public connectionState$ = new BehaviorSubject<string>('Disconnected');
 
   constructor() {
-    // Initialize the HubConnection
     this.hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl('http://localhost:5179/chathub')
+      .withUrl('https://localhost:7167/chathub') 
       .build();
+
+    this.hubConnection.onclose(error => {
+      console.error('Connection closed', error);
+      this.connectionState$.next('Disconnected');
+    });
   }
 
-  // Call this method to start the connection and listen for messages
   public startConnection = () => {
+    this.connectionState$.next('Connecting');
+    console.log('Attempting to start connection...');
+
     this.hubConnection
       .start()
       .then(() => {
-        console.log('Connection started');
+        this.connectionState$.next('Connected');
+        console.log('Connection successful!');
         this.addReceiveMessageListener();
       })
-      .catch(err => console.log('Error while starting connection: ' + err));
+      .catch(err => {
+        console.error('Connection failed: ', err);
+        this.connectionState$.next('Error');
+      });
   }
 
-  // Method to invoke the 'SendMessage' on the hub
   public sendMessage = (user: string, message: string) => {
     this.hubConnection
       .invoke('SendMessage', user, message)
       .catch(err => console.error(err));
   }
 
-  // Private method to set up the listener for 'ReceiveMessage'
   private addReceiveMessageListener = () => {
     this.hubConnection.on('ReceiveMessage', (user: string, message: string) => {
       const currentMessages = this.messages$.getValue();
